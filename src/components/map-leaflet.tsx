@@ -1,9 +1,23 @@
 'use client'
 
 import 'leaflet/dist/leaflet.css'
+import { useEffect } from 'react'
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 
-export function MapPa() {
+export function MapLeaflet() {
+  const getCordinates = async () => {
+    const response = await fetch(
+      'https://nominatim.openstreetmap.org/search.php?q=puente+piedra+peru&format=jsonv2'
+    )
+
+    const data = await response.json()
+    console.log(data)
+  }
+
+  useEffect(() => {
+    getCordinates()
+  }, [])
+
   return (
     <MapContainer
       center={[-12.00739, -77.061487]}
