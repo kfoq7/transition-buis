@@ -3,54 +3,54 @@
 import { useState } from 'react'
 import Head from 'next/head'
 import Layout from '@/components/layout'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUser, faWheelchair } from '@fortawesome/free-solid-svg-icons'
 
-export default function Login() {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [errorMessage, setErrorMessage] = useState('')
+export default function SeleccionUsuario() {
+  const [selectedUserType, setSelectedUserType] = useState('')
 
-  const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    // Aquí puedes implementar la lógica de autenticación (ejemplo simplificado)
-    if (username === 'usuario' && password === 'contraseña') {
-      // Redirigir a la página principal o a la siguiente página
-      console.log('Inicio de sesión exitoso')
-    } else {
-      setErrorMessage('Usuario o contraseña incorrectos')
-    }
+  const handleUserTypeSelect = (userType: string) => {
+    setSelectedUserType(userType)
+    // Aquí podrías redirigir a la siguiente página o guardar la selección, según tu flujo de aplicación
   }
 
   return (
     <Layout>
       <Head>
-        <title>Iniciar Sesión - Mi Aplicación</title>
+        <title>Selección de Tipo de Usuario - Mi Aplicación</title>
       </Head>
-      <div style={{ textAlign: 'center' }}>
-        <h1>Iniciar Sesión</h1>
-        <form onSubmit={handleLogin}>
-          <label>
-            Usuario:
-            <input
-              type="text"
-              value={username}
-              onChange={e => setUsername(e.target.value)}
-              required
+      <div className="text-center">
+        <h1 className="text-2xl font-bold">Seleccione el tipo de usuario:</h1>
+        <div className="flex justify-center gap-8 mt-8">
+          <div
+            className="cursor-pointer flex flex-col items-center hover:text-blue-500"
+            onClick={() => handleUserTypeSelect('comun')}
+          >
+            <FontAwesomeIcon
+              icon={faUser}
+              size="5x"
+              className="transition-transform transform hover:scale-110"
             />
-          </label>
-          <br />
-          <label>
-            Contraseña:
-            <input
-              type="password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              required
+            <p className="mt-2">Usuario Común</p>
+          </div>
+          <div
+            className="cursor-pointer flex flex-col items-center hover:text-blue-500"
+            onClick={() => handleUserTypeSelect('discapacidad')}
+          >
+            <FontAwesomeIcon
+              icon={faWheelchair}
+              size="5x"
+              className="transition-transform transform hover:scale-110"
             />
-          </label>
-          <br />
-          <button type="submit">Iniciar Sesión</button>
-          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-        </form>
+            <p className="mt-2">Usuario con Discapacidad</p>
+          </div>
+        </div>
+        {selectedUserType && (
+          <p className="mt-4">
+            Usted ha seleccionado:{' '}
+            {selectedUserType === 'comun' ? 'Usuario Común' : 'Usuario con Discapacidad'}
+          </p>
+        )}
       </div>
     </Layout>
   )

@@ -19,20 +19,34 @@ export default function SeleccionUsuario() {
       <Head>
         <title>Selección de Tipo de Usuario - Mi Aplicación</title>
       </Head>
-      <div style={{ textAlign: 'center' }}>
-        <h1>Seleccione el tipo de usuario:</h1>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '30px' }}>
-          <div style={{ cursor: 'pointer' }} onClick={() => handleUserTypeSelect('comun')}>
-            <FontAwesomeIcon icon={faUser} size="5x" />
-            <p>Usuario Común</p>
+      <div className="text-center">
+        <h1 className="text-2xl font-bold">Seleccione el tipo de usuario:</h1>
+        <div className="flex justify-center gap-8 mt-8">
+          <div
+            className="cursor-pointer flex flex-col items-center hover:text-blue-500"
+            onClick={() => handleUserTypeSelect('comun')}
+          >
+            <FontAwesomeIcon
+              icon={faUser}
+              size="5x"
+              className="transition-transform transform hover:scale-110"
+            />
+            <p className="mt-2">Usuario Común</p>
           </div>
-          <div style={{ cursor: 'pointer' }} onClick={() => handleUserTypeSelect('discapacidad')}>
-            <FontAwesomeIcon icon={faWheelchair} size="5x" />
-            <p>Usuario con Discapacidad</p>
+          <div
+            className="cursor-pointer flex flex-col items-center hover:text-blue-500"
+            onClick={() => handleUserTypeSelect('discapacidad')}
+          >
+            <FontAwesomeIcon
+              icon={faWheelchair}
+              size="5x"
+              className="transition-transform transform hover:scale-110"
+            />
+            <p className="mt-2">Usuario con Discapacidad</p>
           </div>
         </div>
         {selectedUserType && (
-          <p>
+          <p className="mt-4">
             Usted ha seleccionado:{' '}
             {selectedUserType === 'comun' ? 'Usuario Común' : 'Usuario con Discapacidad'}
           </p>

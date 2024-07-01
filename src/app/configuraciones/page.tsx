@@ -22,20 +22,31 @@ export default function Configuracion() {
       <Head>
         <title>Configuración - Mi Aplicación de Mapas</title>
       </Head>
-      <div>
-        <h1>Configuración de la Aplicación de Mapas</h1>
-        <form onSubmit={handleSubmit}>
-          <label>
-            API Key de Google Maps:
+      <div className="flex flex-col items-center">
+        <h1 className="text-2xl font-bold mb-6">Configuración de la Aplicación de Mapas</h1>
+        <form onSubmit={handleSubmit} className="w-full max-w-xs">
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="apiKey">
+              API Key de Google Maps:
+            </label>
             <input
+              id="apiKey"
               type="text"
               value={apiKey}
               onChange={handleChangeApiKey}
               placeholder="Introduce tu API Key de Google Maps"
               required
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
-          </label>
-          <button type="submit">Guardar</button>
+          </div>
+          <div className="flex items-center justify-between">
+            <button
+              type="submit"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Guardar
+            </button>
+          </div>
         </form>
       </div>
     </Layout>

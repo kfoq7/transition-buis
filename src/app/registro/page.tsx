@@ -28,41 +28,57 @@ export default function Registro() {
       <Head>
         <title>Registro - Mi Aplicación</title>
       </Head>
-      <div style={{ textAlign: 'center' }}>
-        <h1>Registro</h1>
-        <form onSubmit={handleRegister}>
-          <label>
-            Usuario:
+      <div className="flex flex-col items-center">
+        <h1 className="text-2xl font-bold mb-6">Registro</h1>
+        <form onSubmit={handleRegister} className="w-full max-w-xs">
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
+              Usuario:
+            </label>
             <input
+              id="username"
               type="text"
               value={username}
               onChange={e => setUsername(e.target.value)}
               required
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
-          </label>
-          <br />
-          <label>
-            Contraseña:
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+              Contraseña:
+            </label>
             <input
+              id="password"
               type="password"
               value={password}
               onChange={e => setPassword(e.target.value)}
               required
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
-          </label>
-          <br />
-          <label>
-            Confirmar Contraseña:
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="confirmPassword">
+              Confirmar Contraseña:
+            </label>
             <input
+              id="confirmPassword"
               type="password"
               value={confirmPassword}
               onChange={e => setConfirmPassword(e.target.value)}
               required
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
-          </label>
-          <br />
-          <button type="submit">Registrar</button>
-          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+          </div>
+          {errorMessage && <p className="text-red-500 text-xs italic mb-4">{errorMessage}</p>}
+          <div className="flex items-center justify-between">
+            <button
+              type="submit"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Registrar
+            </button>
+          </div>
         </form>
       </div>
     </Layout>
