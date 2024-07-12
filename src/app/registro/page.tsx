@@ -1,84 +1,96 @@
 'use client'
 
 import { useState } from 'react'
-import Head from 'next/head'
+import { useRouter } from 'next/navigation'
 import Layout from '@/components/layout'
+import { useAuth } from '@/hooks/use-auth'
+import { useRegister } from '@/hooks/user-register'
+import { User } from '@/types'
 
-export default function Registro() {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [errorMessage, setErrorMessage] = useState('')
+export default function Register() {
+  const [formData, setFormData] = useState<User>({
+    name: '',
+    lastName: '',
+    email: '',
+    password: ''
+  })
+  const { setUser } = useAuth()
+  const { mutate } = useRegister()
+  const router = useRouter()
 
-  const handleRegister = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    // Aquí puedes implementar la lógica de registro (ejemplo simplificado)
-    if (password !== confirmPassword) {
-      setErrorMessage('Las contraseñas no coinciden')
-    } else {
-      // Aquí podrías guardar el usuario y contraseña en una base de datos o local storage
-      console.log('Usuario registrado:', username)
-      console.log('Contraseña:', password)
-      // Redirigir a la página de inicio de sesión, por ejemplo
-    }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setFormData({
+      ...formData,
+      [name]: value
+    })
+  }
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    mutate(formData, {
+      onSuccess: data => {
+        setUser(data)
+        router.push('/inicio')
+      }
+    })
   }
 
   return (
     <Layout>
-      <Head>
-        <title>Registro - Mi Aplicación</title>
-      </Head>
-      <div className="flex flex-col items-center">
-        <h1 className="text-2xl font-bold mb-6">Registro</h1>
-        <form onSubmit={handleRegister} className="w-full max-w-xs">
+      <div className="flex flex-col justify-center items-center h-screen">
+        <h1 className="text-6xl font-bold tracking-tighter mb-6 text-center">Registro</h1>
+
+        <form onSubmit={handleSubmit} className="bg-orange-400/75 p-8 rounded-md shadow-md w-96">
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
-              Usuario:
+            <label htmlFor="name" className="block text-gray-700 font-semibold text-lg">
+              Nombre
             </label>
             <input
-              id="username"
               type="text"
-              value={username}
-              onChange={e => setUsername(e.target.value)}
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border rounded focus:outline-none"
               required
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-              Contraseña:
+            <label htmlFor="email" className="block text-gray-700 font-semibold text-lg">
+              Correo
             </label>
             <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.username}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border rounded focus:outline-none"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="password" className="block text-gray-700 font-semibold text-lg">
+              Contrasña
+            </label>
+            <input
+              type="password"
               id="password"
-              type="password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border rounded focus:outline-none"
               required
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="confirmPassword">
-              Confirmar Contraseña:
-            </label>
-            <input
-              id="confirmPassword"
-              type="password"
-              value={confirmPassword}
-              onChange={e => setConfirmPassword(e.target.value)}
-              required
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-          </div>
-          {errorMessage && <p className="text-red-500 text-xs italic mb-4">{errorMessage}</p>}
-          <div className="flex items-center justify-between">
-            <button
-              type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            >
-              Registrar
-            </button>
-          </div>
+          <button
+            type="submit"
+            className="w-full bg-blue-400 text-lg font-semibold py-2 rounded hover:bg-blue-500 transition duration-200 mt-10 drop-shadow-lg border border-black hover:text-black/80"
+          >
+            Registrarse
+          </button>
         </form>
       </div>
     </Layout>
