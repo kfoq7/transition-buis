@@ -7,4 +7,7 @@ export interface User {
   email: string
 }
 
-// export interface User
+export interface ContentResponse<T> {
+  message?: string
+  data: T
+}

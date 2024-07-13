@@ -30,7 +30,7 @@ export default function Register() {
     e.preventDefault()
 
     mutate(formData, {
-      onSuccess: data => {
+      onSuccess: ({ data }) => {
         setUser(data)
         router.push('/inicio')
       }

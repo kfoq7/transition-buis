@@ -1,11 +1,9 @@
 'use client'
 
-// pages/index.tsx
-import Head from 'next/head'
 import dynamic from 'next/dynamic'
 import { useState, FormEvent } from 'react'
+import { Header } from '@/components/header'
 
-// Carga dinámica del componente MapLeaflet para evitar problemas de SSR con Leaflet
 const MapLeaflet = dynamic(() => import('@/components/map-leaflet'), { ssr: false })
 
 export default function Inicio() {
@@ -13,17 +11,14 @@ export default function Inicio() {
 
   const handleSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+
     const query = (event.currentTarget.elements.namedItem('query') as HTMLInputElement).value
     setLocation(query)
   }
 
   return (
     <div className="min-h-screen bg-gray-100 p-4">
-      <Head>
-        <title>Transcion - Inicio</title>
-        <meta name="description" content="Aplicación de mapas" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <Header />
 
       <header className="bg-white shadow-md p-4 rounded-lg mb-4">
         <h1 className="text-3xl font-bold text-gray-800">Transcion</h1>

@@ -1,8 +1,10 @@
 import type { Metadata } from 'next'
 import { inter } from '@/lib/fonts'
 import './globals.css'
+import 'react-toastify/dist/ReactToastify.css'
 import { AuthProvider } from '@/context/auth'
 import { ReactQueryClient } from '@/components/tanstack-query'
+import { ToastifyProvider } from '@/components/toastify'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -18,7 +20,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <ReactQueryClient>
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>
+            {children}
+
+            <ToastifyProvider />
+          </AuthProvider>
         </ReactQueryClient>
       </body>
     </html>
