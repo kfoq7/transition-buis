@@ -3,11 +3,26 @@
 import dynamic from 'next/dynamic'
 import { useState, FormEvent } from 'react'
 import { Header } from '@/components/header'
+import { RouteModal } from '@/components/routes-modal'
+import { useLocation } from '@/hooks/use-location'
 
 const MapLeaflet = dynamic(() => import('@/components/map-leaflet'), { ssr: false })
 
+interface Route {
+  id: number
+  name: string
+  start: string
+  end: string
+}
+
 export default function Inicio() {
   const [location, setLocation] = useState<string>('')
+  const {} = useLocation({ location })
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+  const [routes] = useState<Route[]>([
+    { id: 1, name: 'Route 1', start: 'Point A', end: 'Point B' },
+    { id: 2, name: 'Route 2', start: 'Point C', end: 'Point D' }
+  ])
 
   const handleSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -41,16 +56,33 @@ export default function Inicio() {
         </div>
 
         <div className="bg-white shadow-md p-4 rounded-lg mb-4">
-          <p className="text-gray-600 mb-4">Mapa principal:</p>
+          <div className="flex items-center justify-between my-2">
+            <p className="text-gray-600 mb-4">Mapa principal:</p>
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="bg-blue-500 text-white p-2 rounded-lg"
+            >
+              Mostrar Rutas
+            </button>
+          </div>
           <div className="h-[420px]">
             <MapLeaflet location={location} />
           </div>
+
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="bg-blue-500 text-white p-2 rounded-lg w-full"
+          >
+            Guardar ruta
+          </button>
         </div>
       </main>
 
       <footer className="mt-4 text-center text-gray-600">
         &copy; 2024 Transcion. Todos los derechos reservados.
       </footer>
+
+      <RouteModal routes={routes} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   )
 }
