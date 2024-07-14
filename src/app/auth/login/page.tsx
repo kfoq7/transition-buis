@@ -29,6 +29,7 @@ export default function Login() {
 
     mutate(formData, {
       onSuccess: ({ data }) => {
+        localStorage.setItem('user', JSON.stringify(data))
         setUser(data)
         router.push('/inicio')
       },
