@@ -3,6 +3,7 @@ import { inter } from '@/lib/fonts'
 import './globals.css'
 import 'react-toastify/dist/ReactToastify.css'
 import { AuthProvider } from '@/context/auth'
+import { LocationProvider } from '@/context/location'
 import { ReactQueryClient } from '@/components/tanstack-query'
 import { ToastifyProvider } from '@/components/toastify'
 
@@ -21,9 +22,11 @@ export default function RootLayout({
       <body className={inter.className}>
         <ReactQueryClient>
           <AuthProvider>
-            {children}
+            <LocationProvider>
+              {children}
 
-            <ToastifyProvider />
+              <ToastifyProvider />
+            </LocationProvider>
           </AuthProvider>
         </ReactQueryClient>
       </body>

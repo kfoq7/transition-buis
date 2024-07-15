@@ -7,12 +7,8 @@ import 'leaflet/dist/leaflet.css'
 import RoutingMachine from './routing-machine'
 import { useLocation } from '@/hooks/use-location'
 
-interface MapLeafletProps {
-  location?: string
-}
-
-export default function MapLeaflet({ location }: MapLeafletProps) {
-  const { currentCoordinates, destinationCoordinates } = useLocation({ location })
+export default function MapLeaflet() {
+  const { currentCoordinates, destinationCoordinates } = useLocation()
   const mapRef = useRef<L.Map | null>(null)
 
   return (

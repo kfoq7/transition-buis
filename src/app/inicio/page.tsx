@@ -1,10 +1,14 @@
 'use client'
 
-import dynamic from 'next/dynamic'
 import { useState, FormEvent } from 'react'
+import dynamic from 'next/dynamic'
+import { useRouter } from 'next/navigation'
 import { Header } from '@/components/header'
 import { RouteModal } from '@/components/routes-modal'
 import { useLocation } from '@/hooks/use-location'
+import { useAuth } from '@/hooks/use-auth'
+import { useUserHistoryMutation } from '@/hooks/use-user-history-mutation'
+import { toast } from 'react-toastify'
 
 const MapLeaflet = dynamic(() => import('@/components/map-leaflet'), { ssr: false })
 
@@ -16,19 +20,43 @@ interface Route {
 }
 
 export default function Inicio() {
-  const [location, setLocation] = useState<string>('')
-  const {} = useLocation({ location })
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const [routes] = useState<Route[]>([
     { id: 1, name: 'Route 1', start: 'Point A', end: 'Point B' },
     { id: 2, name: 'Route 2', start: 'Point C', end: 'Point D' }
   ])
 
+  const router = useRouter()
+
+  const { user } = useAuth()
+  const { mutate } = useUserHistoryMutation({ userId: user?.id })
+  const { route, fetchLocationDestination } = useLocation()
+
   const handleSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     const query = (event.currentTarget.elements.namedItem('query') as HTMLInputElement).value
-    setLocation(query)
+    fetchLocationDestination(query)
+  }
+
+  const handleSaveRoute = () => {
+    if (!user) {
+      router.push('/profile')
+    }
+
+    if (route) {
+      mutate(
+        { route },
+        {
+          onSuccess: () => {
+            toast.success('Ruta agregada a favortios')
+          },
+          onError: error => {
+            toast.warn(error?.response.data.error)
+          }
+        }
+      )
+    }
   }
 
   return (
@@ -59,19 +87,25 @@ export default function Inicio() {
           <div className="flex items-center justify-between my-2">
             <p className="text-gray-600 mb-4">Mapa principal:</p>
             <button
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => {
+                if (!user) {
+                  router.push('/profile')
+                }
+
+                setIsModalOpen(true)
+              }}
               className="bg-blue-500 text-white p-2 rounded-lg"
             >
               Mostrar Rutas
             </button>
           </div>
           <div className="h-[420px]">
-            <MapLeaflet location={location} />
+            <MapLeaflet />
           </div>
 
           <button
-            onClick={() => setIsModalOpen(true)}
-            className="bg-blue-500 text-white p-2 rounded-lg w-full"
+            onClick={handleSaveRoute}
+            className="bg-blue-500 text-white p-2 rounded-lg w-full mt-4"
           >
             Guardar ruta
           </button>

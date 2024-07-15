@@ -87,6 +87,7 @@ export default function Register() {
           </div>
           <button
             type="submit"
+            onClick={() => router.push('/incio')}
             className="w-full bg-blue-400 text-lg font-semibold py-2 rounded hover:bg-blue-500 transition duration-200 mt-10 drop-shadow-lg border border-black hover:text-black/80"
           >
             Registrarse
